@@ -142,7 +142,7 @@ const FormularioTareaNueva = () => {
 
 
 
-                  <FormField
+                 <FormField
           control={form.control}
           name="date"
           render={({ field }) => (
