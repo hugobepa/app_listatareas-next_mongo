@@ -13,7 +13,7 @@ export default function Home() {
         <p className="text-gray-600 text-center">Gestionar tus tareas de forma eficiente</p>
       </div>
 
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+      <section className="grid grid-cols-1 l:grid-cols-2 xl:grid-cols-3 gap-4 w-full max-w-5xl">
 
         {
           tareas.map(tarea=>(
