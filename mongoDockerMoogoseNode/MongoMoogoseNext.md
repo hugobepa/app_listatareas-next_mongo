@@ -55,7 +55,7 @@ POSTGRES_PASSWORD=123456
 ```
 
 3. raiz añadir "docker-compose.yml"  para trabajar con mongo docker. Abrir docker desktop:
-
+  probar con el nombre de bbd - MONGO_INITDB_DATABASE=${MONGO_DB_NAME}
 ````
 version: '3.8'
 
