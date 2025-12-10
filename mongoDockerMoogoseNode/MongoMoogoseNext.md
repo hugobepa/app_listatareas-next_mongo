@@ -103,6 +103,150 @@ https://www.npmjs.com/package/dotenv npm i dotenv
 
 8. ir a  ".env" y copiarlo en " MONGO_URL= ": MONGO_URL=mongodb://fernando:123456@localhost:27017
 
+
+9. instalar: 
+
+#npm install mongodb
+https://www.npmjs.com/package/mongodb
+https://www.mongodb.com/resources/languages/mongodb-and-npm-tutorial
+https://mongoosejs.com/ npm install mongoose
+https://www.npmjs.com/package/dotenv npm i dotenv
+
+10. guardar conexion mongodb, crear  "src/utils/database.ts":
+
+````
+import mongoose, { Mongoose } from "mongoose";
+
+
+
+interface MongooseConection{
+    conn: Mongoose | null;
+    promise: Promise<Mongoose> | null;
+
+}
+
+let cached : MongooseConection = (global as any).moongose
+
+if(!cached){
+    cached = (global as any).mongose ={
+        conn: null,
+        promise: null,
+    }
+}
+
+export const connectToBBDD = async () =>{
+
+    if(cached.conn) return cached.conn
+
+    if(!process.env.MONGO_URL) throw new Error('falta MONGO_URL')
+    cached.promise = cached.promise || mongoose.connect(process.env.MONGO_URL,{
+        dbName: 'mongo-db-1',//app_listatareas
+        bufferCommands: false, 
+    })
+
+    cached.conn = await cached.promise
+
+    return cached.conn
+}
+
+````
+
+11. crear modelos "/src/models/tareas.ts":
+
+````
+const TareaSchema =new Schema(
+    {
+
+        titulo:{
+            type: String,
+            required: true
+        },
+        desc:{
+            type: String,
+        },
+        date:{
+            type:Date,
+            default: new Date(),      
+        },
+        isCompleted:{
+            type:Boolean,
+        },
+
+    })
+
+    const Tarea = models.Tarea || model('Tarea',TareaSchema)
+
+    export default Tarea
+
+
+````
+
+12. crear "/src/lib/actions.tarea.ts":
+
+````
+'use server'
+
+import Tarea from "@/models/tareas";
+import { connectToBBDD } from "@/utils/database"
+
+export const CreateTarea = async() =>{
+    const tareaNueva ={
+        titulo: "Comprar comestibles",
+      desc: "Compra alimentos para la semana: leche, huevos, pan, frutas y verduras.",
+      isCompleted: false
+    }
+
+
+await connectToBBDD();
+
+try {
+    const tarea = new Tarea(tareaNueva)
+    const tareaCreada = await tarea.save()
+
+    return tareaCreada
+    
+} catch (error) {
+    console.log({error})
+}
+
+}
+
+````
+
+13. ir a "/src/app/page.tsx" y llamar funcion:
+
+````
+
+export default async function Home() {
+
+const tarea = await CreateTarea();
+
+  return (
+
+````
+
+14. correr la tarea , terminal: npm run dev
+
+15. ir a atlas refrescar atlas y chequear a la
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -----NODEJS-----
 
 9.  "src/config/plugins/env.plugins":
