@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default async function Home() {
 
-const tarea = await CreateTarea();
+//const tarea = await CreateTarea();
 
   return (
     <main className="flex min-h-screen flex-col items-center  p-24 bg-[url('/assets/images/grid.png')]">
