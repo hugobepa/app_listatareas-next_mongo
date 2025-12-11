@@ -67,14 +67,13 @@ export const editarTarea = async(tarea: TareaInterface)=>{
         const tareaAEditar = await Tarea.findById(tarea._id) as TareaInterface;
        if(!tareaAEditar) return
 
-//         const{date}=tareaAEditar;
-//    //console.log({date})
-//         let now = date
+        
 //         { date: now,
 //  offset: now.getTimezoneOffset() }
 
         const tareaActualizada = await Tarea.findByIdAndUpdate(tareaAEditar._id,tarea,{new: true})
-
+        
+          
         return JSON.parse(JSON.stringify(tareaActualizada))
 
 
