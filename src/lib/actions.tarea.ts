@@ -53,21 +53,27 @@ try {
 
 
 
-export const EditarTarea = async()=>{
+export const editarTarea = async(tarea: TareaInterface)=>{
+
+   
+
+    
 
     await connectToBBDD();
 
     try {
         
-        const tareaID = '69399fbbebc35309fe419d43'
+        //console.log(tarea._id);
+        const tareaAEditar = await Tarea.findById(tarea._id) as TareaInterface;
+       if(!tareaAEditar) return
 
-         const tareaNueva ={
-        titulo: "tarea actualizada 2",
-        desc: "Ex eiusmod duis ea tempor veniam aliquip dolor aliqua cupidatat voluptate nulla aliquip quis cupidatat.",
-      isCompleted: false
-    }
+//         const{date}=tareaAEditar;
+//    //console.log({date})
+//         let now = date
+//         { date: now,
+//  offset: now.getTimezoneOffset() }
 
-        const tareaActualizada = await Tarea.findByIdAndUpdate(tareaID,tareaNueva,{new: true})
+        const tareaActualizada = await Tarea.findByIdAndUpdate(tareaAEditar._id,tarea,{new: true})
 
         return JSON.parse(JSON.stringify(tareaActualizada))
 
@@ -103,6 +109,23 @@ export const getTareas = async ()=>{
     try {
         
         const tareas = await Tarea.find()
+
+          return JSON.parse(JSON.stringify(tareas))
+    } catch (error) {
+        console.log({error})
+        
+    }
+
+}
+
+
+export const getTareasById = async (tareaId:String)=>{
+
+    await connectToBBDD();
+         
+    try {
+        
+        const tareas = await Tarea.findById(tareaId)
 
           return JSON.parse(JSON.stringify(tareas))
     } catch (error) {

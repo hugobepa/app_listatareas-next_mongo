@@ -1,7 +1,9 @@
 import { TareaTarjeta } from "@/components/TareaTarjeta";
+import { Button } from "@/components/ui/button";
 import { tareas } from "@/contants";
 import { CreateTarea, getTareas } from "@/lib/actions.tarea";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Home() {
 
@@ -15,12 +17,25 @@ const tareas =await getTareas() as TareaInterface[]
         <p className="text-gray-600 text-center">Gestionar tus tareas de forma eficiente</p>
       </div>
 
-      <section className="grid grid-cols-1 l:grid-cols-2 xl:grid-cols-3 gap-4 w-full max-w-5xl">
+      <div className="flex justify-end w-full mb-6">
+        <Link href={"/tareas/crear"}>
+         <Button
+         variant="default"     
+        >
+          Crear tarea
+        </Button>
+        </Link>
+      </div>
+
+
+
+      <section className="grid grid-cols-1 l:grid-cols-2 xl:grid-cols-3 gap-4 w-full max-w-5xl place-items-center">
 
         {
           tareas.map((tarea,index)=>(
           <TareaTarjeta 
-          key={tarea._id} 
+          key={index} 
+          _id= {tarea._id}
           titulo={tarea.titulo} 
           desc={tarea.desc}
            date={tarea.date} 

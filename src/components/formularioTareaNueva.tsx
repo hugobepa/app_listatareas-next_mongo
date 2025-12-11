@@ -29,7 +29,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { useState } from "react"
-import { CreateTarea } from "@/lib/actions.tarea"
+import { CreateTarea, editarTarea } from "@/lib/actions.tarea"
 import { useRouter } from "next/navigation"
 
 
@@ -38,28 +38,52 @@ import { useRouter } from "next/navigation"
 
 
 const formSchema = z.object({
+    _id: z.string().optional(),
     titulo: z.string().min(2),
     desc: z.string(),
     date: z.date(),
     isCompleted: z.boolean(),
 })
 
-const FormularioTareaNueva = () => {
+interface Props {
+    type: 'crear' | 'editar'
+    data?: TareaInterface
+}
+
+
+const FormularioTareaNueva = ({ type, data }: Props) => {
 
     const router = useRouter()
-    
+
     const [date, setDate] = useState<Date>()
     const [open, setOpen] = useState(false)
+
+
+
+    const tareaDefaultValues = {
+        titulo: "",
+        desc: "",
+        date: new Date(),
+        isCompleted: false,
+
+    }
+
+    const tareaEditarValues = {
+        _id: data?._id,
+        titulo: data?.titulo,
+        desc: data?.desc,
+        date: data?.date ? new Date(data?.date) : new Date(),
+        isCompleted: data?.isCompleted,
+
+    }
+
+
+    const initialValues = data && type === 'editar' ? tareaEditarValues : tareaDefaultValues;
+
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: {
-            titulo: "",
-            desc: "",
-            date: new Date(),
-            isCompleted: false,
-
-        },
+        defaultValues: initialValues
     })
 
     // 2. Define a submit handler.
@@ -69,10 +93,24 @@ const FormularioTareaNueva = () => {
         console.log({ values })
 
         try {
-            const tareaNueva = await CreateTarea(values);
 
-            if(tareaNueva){
-                router.push('/');
+            if (type === 'crear') {
+                const tareaNueva = await CreateTarea(values);
+
+                if (tareaNueva) {
+                    router.push('/');
+                    form.reset();
+                }
+            }
+
+
+             if (type === 'editar') {
+                const tareaActualizada = await editarTarea(values);
+
+                if (tareaActualizada) {
+                    router.push('/');
+                    form.reset();
+                }
             }
 
 
@@ -82,7 +120,7 @@ const FormularioTareaNueva = () => {
         }
     }
 
-     
+
 
     return (
 
@@ -159,47 +197,47 @@ const FormularioTareaNueva = () => {
 
 
 
-                 <FormField
-          control={form.control}
-          name="date"
-          render={({ field }) => (
-            <FormItem className='flex flex-col gap-2'>
-              <FormLabel>Fecha a Completar</FormLabel>
-              <FormControl>
+                <FormField
+                    control={form.control}
+                    name="date"
+                    render={({ field }) => (
+                        <FormItem className='flex flex-col gap-2'>
+                            <FormLabel>Fecha a Completar</FormLabel>
+                            <FormControl>
 
-              <Popover open={open} onOpenChange={setOpen}>
-                    <PopoverTrigger asChild>
-                        <Button
-                        variant={"outline"}
-                        className={cn(
-                            "w-[280px] justify-start text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                        )}
-                        >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
-                        </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                        <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        onDayClick={(newValue)=>{
-                                            setDate(newValue)
-                                            setOpen(false);
-                                            
-                                        }}
-                       
-                        />
-                    </PopoverContent>
-                </Popover>
+                                <Popover open={open} onOpenChange={setOpen}>
+                                    <PopoverTrigger asChild>
+                                        <Button
+                                            variant={"outline"}
+                                            className={cn(
+                                                "w-[280px] justify-start text-left font-normal",
+                                                !field.value && "text-muted-foreground"
+                                            )}
+                                        >
+                                            <CalendarIcon className="mr-2 h-4 w-4" />
+                                            {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-0">
+                                        <Calendar
+                                            mode="single"
+                                            selected={field.value}
+                                            onSelect={field.onChange}
+                                            onDayClick={(newValue) => {
+                                                setDate(newValue)
+                                                setOpen(false);
 
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                                            }}
+
+                                        />
+                                    </PopoverContent>
+                                </Popover>
+
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
 
 
 

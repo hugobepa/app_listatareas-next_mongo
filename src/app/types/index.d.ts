@@ -13,10 +13,10 @@ declare type tareaNueva =
 
 declare type TareaInterface =
     {
-        _id:string;
+        _id?:string | undefined;
         titulo:string;
         desc:string;
-        date:string;
+        date:string | Date;
         isCompleted:boolean;
 
     }

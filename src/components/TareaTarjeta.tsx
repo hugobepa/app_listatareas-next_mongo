@@ -11,24 +11,33 @@ import {
 } from "@/components/ui/card"
 import { Button } from "./ui/button";
 import { useState } from "react";
-import { CheckIcon } from "lucide-react";
+import { CheckIcon, Pencil, PencilIcon, Trash2, Trash2Icon } from "lucide-react";
 import { Separator } from "@radix-ui/react-separator";
+import { useRouter } from "next/navigation";
 
 interface Props {
+  _id: string | undefined;
   titulo: string;
   desc: string;
-  date: string; //date: Date;
+  date: string | Date;
   isCompleted: boolean;
 
 }
 
-export const TareaTarjeta = ({ titulo, desc, date, isCompleted }: Props) => {
+export const TareaTarjeta = ({ _id,titulo, desc, date, isCompleted }: Props) => {
+  const  router = useRouter();
 
   const [completed, setCompleted] = useState(isCompleted)
 
   const handleClick = () => {
     setCompleted((prevState => !prevState))
   }
+
+   function handleEdit(){
+       router.push(`/tareas/editar/${_id}`)
+   }
+
+
 
   return (
     <Card className="w-[320px]">
@@ -46,7 +55,7 @@ export const TareaTarjeta = ({ titulo, desc, date, isCompleted }: Props) => {
 
         <div className="flex justify-between items-center w-full">
 
-          <p className="text-sm text-gray-600">{date.substring(0,10)}</p>
+          <p className="text-sm text-gray-600">{date.toString().substring(0,10)}</p>
 
 
           {completed ? (
@@ -62,7 +71,12 @@ export const TareaTarjeta = ({ titulo, desc, date, isCompleted }: Props) => {
 
         </div>
 
-
+        <div className="flex justify-end gap-8 w-full my-2 py-2">
+          <PencilIcon className="text-gray-400 hover:text-blue-600 cursor-pointer "  
+          onClick={handleEdit}
+          size={20}/>
+          <Trash2Icon className="text-gray-400 hover:text-red-600 cursor-pointer" size={20}/>
+        </div>
 
 
       </CardFooter>
