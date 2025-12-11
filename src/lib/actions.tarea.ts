@@ -1,20 +1,39 @@
+//http://localhost:3000/tareas/crear
 'use server'
 
 import Tarea from "@/models/tareas";
 import { connectToBBDD } from "@/utils/database"
-
-export const CreateTarea = async() =>{
-    const tareaNueva ={
-        titulo: "Leer libro 2",
-        desc: "Ex eiusmod duis ea tempor veniam aliquip dolor aliqua cupidatat voluptate nulla aliquip quis cupidatat.",
-      isCompleted: false
-    }
+import clsx from "clsx";
+import { timeStamp } from "console";
 
 
+export const cambiarFecha= async (tareaNuevaN: tareaNueva) =>{
+     let {date,...rest} =tareaNuevaN;
+
+     date.setDate(date.getDate()+1)
+
+        return tareaNuevaN;
+  
+}
+
+
+
+export const CreateTarea = async(tareaNueva: tareaNueva) =>{
+    // const tareaNueva ={
+    //     titulo: "Leer libro 2",
+    //     desc: "Ex eiusmod duis ea tempor veniam aliquip dolor aliqua cupidatat voluptate nulla aliquip quis cupidatat.",
+    //   isCompleted: false
+    // }
+  
+    const cambioFechaTarea = await cambiarFecha(tareaNueva);
+    //console.log({cambioFechaTarea})
 await connectToBBDD();
 
 try {
-    const tarea = new Tarea(tareaNueva)
+
+
+    //const tarea = new Tarea(tareaNueva)
+    const tarea = new Tarea(cambioFechaTarea)
     const tareaCreada = await tarea.save()
 
     //return tareaCreada

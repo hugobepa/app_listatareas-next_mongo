@@ -29,6 +29,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { useState } from "react"
+import { CreateTarea } from "@/lib/actions.tarea"
 
 
 
@@ -42,6 +43,7 @@ const formSchema = z.object({
 })
 
 const FormularioTareaNueva = () => {
+    
     const [date, setDate] = useState<Date>()
     const [open, setOpen] = useState(false)
     // 1. Define your form.
@@ -57,15 +59,19 @@ const FormularioTareaNueva = () => {
     })
 
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
         console.log({ values })
+
+        try {
+            const tareaNueva = await CreateTarea(values);
+        } catch (error) {
+            console.log(error)
+        }
     }
 
-
-
-    
+     
 
     return (
 

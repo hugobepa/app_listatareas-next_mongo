@@ -1,6 +1,9 @@
 import { model, models, Schema } from "mongoose";
 
 
+
+
+
 const TareaSchema =new Schema(
     {
 
@@ -13,7 +16,7 @@ const TareaSchema =new Schema(
         },
         date:{
             type:Date,
-            default: new Date(),      
+            default:new Date(),      
         },
         isCompleted:{
             type:Boolean,
