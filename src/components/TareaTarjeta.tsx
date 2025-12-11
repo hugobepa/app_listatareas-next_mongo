@@ -10,11 +10,11 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Button } from "./ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CheckIcon, Pencil, PencilIcon, Trash2, Trash2Icon } from "lucide-react";
 import { Separator } from "@radix-ui/react-separator";
 import { useRouter } from "next/navigation";
-import { borrarTarea } from "@/lib/actions.tarea";
+import { borrarTarea, completarTarea } from "@/lib/actions.tarea";
 import { refresh } from "next/cache";
 
 interface Props {
@@ -43,8 +43,18 @@ export const TareaTarjeta = ({ _id,titulo, desc, date, isCompleted }: Props) => 
        if(_id){
         const tareaBorrada = await borrarTarea(_id as string)
        }
+      }
+
+
+     async function handleComplete(){
        
-       
+      if(_id){
+         const tareaActualizada = await completarTarea(_id as string)
+
+      setCompleted((prevState)=>!prevState)
+      }
+
+
    }
 
   return (
@@ -71,7 +81,7 @@ export const TareaTarjeta = ({ _id,titulo, desc, date, isCompleted }: Props) => 
           ) : (
             <Button
               variant="outline"
-              onClick={handleClick}
+              onClick={handleComplete}
             >
               Completar
             </Button>

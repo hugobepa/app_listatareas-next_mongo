@@ -57,10 +57,6 @@ try {
 
 export const editarTarea = async(tarea: TareaInterface)=>{
 
-   
-
-    
-
     await connectToBBDD();
 
     try {
@@ -68,10 +64,6 @@ export const editarTarea = async(tarea: TareaInterface)=>{
         //console.log(tarea._id);
         const tareaAEditar = await Tarea.findById(tarea._id) as TareaInterface;
        if(!tareaAEditar) return
-
-        
-//         { date: now,
-//  offset: now.getTimezoneOffset() }
 
         const tareaActualizada = await Tarea.findByIdAndUpdate(tareaAEditar._id,tarea,{new: true})
         
@@ -85,6 +77,30 @@ export const editarTarea = async(tarea: TareaInterface)=>{
 }
 
 
+export const completarTarea = async(tareaId: string)=>{
+
+    await connectToBBDD();
+
+    try {
+        
+        //console.log(tarea._id);
+        const tareaAEditar = await Tarea.findById(tareaId) as TareaInterface;
+       if(!tareaAEditar) return
+
+        const tareaActualizada = await Tarea.findByIdAndUpdate(tareaAEditar._id,{
+            isCompleted: true
+
+        },{new: true})
+        refresh();
+        revalidatePath('/')  
+        
+        return JSON.parse(JSON.stringify(tareaActualizada))
+
+
+    } catch (error) {
+        console.log({error})
+    }
+}
 
 export const borrarTarea = async(tareaId: string)=>{
 
