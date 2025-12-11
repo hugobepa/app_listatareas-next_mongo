@@ -5,6 +5,8 @@ import Tarea from "@/models/tareas";
 import { connectToBBDD } from "@/utils/database"
 import clsx from "clsx";
 import { timeStamp } from "console";
+import { refresh } from "next/cache";
+import { revalidatePath } from 'next/cache'
 
 
 export const cambiarFecha= async (tareaNuevaN: tareaNueva) =>{
@@ -41,7 +43,7 @@ try {
  const tareaCreada = await tarea.save({ date: now,
  offset: now.getTimezoneOffset() } )
      //const tareaCreada = await tarea.save( )
-
+     revalidatePath('/')
     //return tareaCreada
     return JSON.parse(JSON.stringify(tareaCreada))
     
@@ -73,7 +75,7 @@ export const editarTarea = async(tarea: TareaInterface)=>{
 
         const tareaActualizada = await Tarea.findByIdAndUpdate(tareaAEditar._id,tarea,{new: true})
         
-          
+         revalidatePath('/')  
         return JSON.parse(JSON.stringify(tareaActualizada))
 
 
@@ -84,17 +86,19 @@ export const editarTarea = async(tarea: TareaInterface)=>{
 
 
 
-export const EliminarTarea = async()=>{
+export const borrarTarea = async(tareaId: string)=>{
 
     await connectToBBDD();
 
     try {
         
-        const tareaID = '69399fbbebc35309fe419d43'
+        
   
-        const tareaBorrada = await Tarea.findByIdAndDelete(tareaID)
-       
-        return 'OK'
+        const tareaBorrada = await Tarea.findByIdAndDelete(tareaId)
+
+        revalidatePath('/')
+       refresh()
+        return JSON.parse(JSON.stringify(tareaBorrada))
 
     } catch (error) {
         console.log({error})

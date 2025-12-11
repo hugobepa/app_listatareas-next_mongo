@@ -14,9 +14,11 @@ import { useState } from "react";
 import { CheckIcon, Pencil, PencilIcon, Trash2, Trash2Icon } from "lucide-react";
 import { Separator } from "@radix-ui/react-separator";
 import { useRouter } from "next/navigation";
+import { borrarTarea } from "@/lib/actions.tarea";
+import { refresh } from "next/cache";
 
 interface Props {
-  _id: string | undefined;
+  _id?: string | undefined;
   titulo: string;
   desc: string;
   date: string | Date;
@@ -37,7 +39,13 @@ export const TareaTarjeta = ({ _id,titulo, desc, date, isCompleted }: Props) => 
        router.push(`/tareas/editar/${_id}`)
    }
 
-
+   async function handleDelete(){
+       if(_id){
+        const tareaBorrada = await borrarTarea(_id as string)
+       }
+       
+       
+   }
 
   return (
     <Card className="w-[320px]">
@@ -75,7 +83,9 @@ export const TareaTarjeta = ({ _id,titulo, desc, date, isCompleted }: Props) => 
           <PencilIcon className="text-gray-400 hover:text-blue-600 cursor-pointer "  
           onClick={handleEdit}
           size={20}/>
-          <Trash2Icon className="text-gray-400 hover:text-red-600 cursor-pointer" size={20}/>
+          <Trash2Icon className="text-gray-400 hover:text-red-600 cursor-pointer"
+           onClick={handleDelete}
+          size={20}/>
         </div>
 
 

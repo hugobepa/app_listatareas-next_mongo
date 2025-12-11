@@ -3,7 +3,7 @@
 
 import FormularioTareaNueva from "@/components/formularioTareaNueva"
 import { Button } from "@/components/ui/button"
-import { CreateTarea, editarTarea, EliminarTarea } from "@/lib/actions.tarea"
+import { CreateTarea, editarTarea,} from "@/lib/actions.tarea"
 
 
 
@@ -19,9 +19,9 @@ export const CrearTareaspage = () => {
     //     const tarea =await editarTarea()
     // }
 
-     async function handleEliminar(){
-        const tarea =await EliminarTarea()
-    }
+    //  async function handleEliminar(){
+    //     const tarea =await EliminarTarea()
+    // }
 
   return (
     <main className="flex min-h-screen flex-col items-center  p-24 bg-[url('/assets/images/grid.png')]">

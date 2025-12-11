@@ -38,7 +38,7 @@ const tareas =await getTareas() as TareaInterface[]
           _id= {tarea._id}
           titulo={tarea.titulo} 
           desc={tarea.desc}
-           date={tarea.date} 
+           date={tarea.date as string} 
            isCompleted={tarea.isCompleted}          
           />
         ))
