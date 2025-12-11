@@ -26,15 +26,20 @@ export const CreateTarea = async(tareaNueva: tareaNueva) =>{
     // }
   
     const cambioFechaTarea = await cambiarFecha(tareaNueva);
+   const{date}=tareaNueva;
+   //console.log({date})
+   let now = date;
+
     //console.log({cambioFechaTarea})
 await connectToBBDD();
 
 try {
 
 
-    //const tarea = new Tarea(tareaNueva)
-    const tarea = new Tarea(cambioFechaTarea)
-    const tareaCreada = await tarea.save()
+    const tarea = new Tarea(tareaNueva)
+    //const tarea = new Tarea(cambioFechaTarea)
+    const tareaCreada = await tarea.save({ date: now,
+offset: now.getTimezoneOffset() } )
 
     //return tareaCreada
     return JSON.parse(JSON.stringify(tareaCreada))
