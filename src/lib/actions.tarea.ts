@@ -30,7 +30,7 @@ export const CreateTarea = async(tareaNueva: tareaNueva) =>{
    //console.log({date})
    let now = date;
 
-    //console.log({cambioFechaTarea})
+    //console.log({now})
 await connectToBBDD();
 
 try {
@@ -38,8 +38,9 @@ try {
 
     const tarea = new Tarea(tareaNueva)
     //const tarea = new Tarea(cambioFechaTarea)
-    const tareaCreada = await tarea.save({ date: now,
-offset: now.getTimezoneOffset() } )
+ const tareaCreada = await tarea.save({ date: now,
+ offset: now.getTimezoneOffset() } )
+     //const tareaCreada = await tarea.save( )
 
     //return tareaCreada
     return JSON.parse(JSON.stringify(tareaCreada))
@@ -93,4 +94,20 @@ export const EliminarTarea = async()=>{
     } catch (error) {
         console.log({error})
     }
+}
+
+export const getTareas = async ()=>{
+
+    await connectToBBDD();
+         
+    try {
+        
+        const tareas = await Tarea.find()
+
+          return JSON.parse(JSON.stringify(tareas))
+    } catch (error) {
+        console.log({error})
+        
+    }
+
 }

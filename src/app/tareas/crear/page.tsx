@@ -11,9 +11,9 @@ import { CreateTarea, EditarTarea, EliminarTarea } from "@/lib/actions.tarea"
 
 export const CrearTareaspage = () => {
 
-    async function handleCrear(){
-        const tarea =await CreateTarea()
-    }
+    // async function handleCrear(){
+    //     const tarea =await CreateTarea()
+    // }
 
      async function handleEditar(){
         const tarea =await EditarTarea()

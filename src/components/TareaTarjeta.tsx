@@ -17,7 +17,7 @@ import { Separator } from "@radix-ui/react-separator";
 interface Props {
   titulo: string;
   desc: string;
-  date: Date;
+  date: string; //date: Date;
   isCompleted: boolean;
 
 }
@@ -46,7 +46,7 @@ export const TareaTarjeta = ({ titulo, desc, date, isCompleted }: Props) => {
 
         <div className="flex justify-between items-center w-full">
 
-          <p className="text-sm text-gray-600">{date.toDateString()}</p>
+          <p className="text-sm text-gray-600">{date.substring(0,10)}</p>
 
 
           {completed ? (

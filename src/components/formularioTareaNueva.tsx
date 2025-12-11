@@ -30,6 +30,8 @@ import {
 } from "@/components/ui/popover"
 import { useState } from "react"
 import { CreateTarea } from "@/lib/actions.tarea"
+import { useRouter } from "next/navigation"
+
 
 
 
@@ -43,6 +45,8 @@ const formSchema = z.object({
 })
 
 const FormularioTareaNueva = () => {
+
+    const router = useRouter()
     
     const [date, setDate] = useState<Date>()
     const [open, setOpen] = useState(false)
@@ -66,6 +70,13 @@ const FormularioTareaNueva = () => {
 
         try {
             const tareaNueva = await CreateTarea(values);
+
+            if(tareaNueva){
+                router.push('/');
+            }
+
+
+
         } catch (error) {
             console.log(error)
         }
