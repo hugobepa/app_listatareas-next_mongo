@@ -5,6 +5,9 @@ https://momentjs.com/timezone/docs/
 moment("2013-11-18").tz("Europe/Berlin").format('Z');
 npm install moment-timezone
 
+import moment from 'moment-timezone';
+moment().tz("America/Los_Angeles").format();
+
 tareas
 
 const moment = require('moment-timezone');
@@ -25,3 +28,21 @@ const categorySchema = new Schema(
         updated_date: {type: Date, default: dateThailand}
     }, {_id: false}
 );
+
+
+---action.tarea.ts---
+
+import moment from 'moment-timezone';
+
+
+
+
+ const sentTime=moment().tz("Europe/Madrid").format();
+const tareaActualizada = await Tarea.findByIdAndUpdate(tareaAEditar._id,tarea,{sentTime: sentTime })
+
+--------------------------------------
+
+https://mongoosejs.com/docs/7.x/docs/tutorials/dates.html
+https://moldstud.com/articles/p-handling-timezones-and-dates-in-mongoose
+https://medium.com/@turingvang/todo-app-nextjs-mongose-958b97d3afdb
+https://momentjs.com/timezone/docs/
