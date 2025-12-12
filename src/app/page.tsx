@@ -1,4 +1,5 @@
 import NavBar from "@/components/NavBar";
+import TareaLista from "@/components/TareaLista";
 import { TareaTarjeta } from "@/components/TareaTarjeta";
 import { Button } from "@/components/ui/button";
 import { tareas } from "@/contants";
@@ -23,33 +24,13 @@ const etiquetas = await getEtiquetas() as EtiquetaInterface[]
         <p className="text-gray-600 text-center">Gestionar tus tareas de forma eficiente</p>
       </div>
 
-      <div className="flex justify-end w-full mb-6">
-        <Link href={"/tareas/crear"}>
-         <Button
-         variant="default" 
-         className="bg-blue-700"    
-        >
-          Crear tarea
-        </Button>
-        </Link>
-      </div>
+      
 
 
-
-      <section className="grid grid-cols-1 l:grid-cols-2 xl:grid-cols-3 gap-4 w-full max-w-5xl place-items-center">
-
-        {
-          tareas.map((tarea,index)=>(
-          <TareaTarjeta 
-          key={index} 
-          tarea ={tarea}  
-           etiquetas={ etiquetas}       
-          />
-        ))
-        }
-        
-
-      </section>
+      <TareaLista 
+      tareas ={tareas}  
+      etiquetas={ etiquetas} />
+    
     </main>
   );
 }
