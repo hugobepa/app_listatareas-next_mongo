@@ -2,6 +2,7 @@ import NavBar from "@/components/NavBar";
 import { TareaTarjeta } from "@/components/TareaTarjeta";
 import { Button } from "@/components/ui/button";
 import { tareas } from "@/contants";
+import { getEtiquetas } from "@/lib";
 import { CreateTarea, getTareas } from "@/lib/actions.tarea";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,6 +10,8 @@ import Link from "next/link";
 export default async function Home() {
 
 const tareas =await getTareas() as TareaInterface[]
+
+const etiquetas = await getEtiquetas() as EtiquetaInterface[]
 
 
 
@@ -39,11 +42,8 @@ const tareas =await getTareas() as TareaInterface[]
           tareas.map((tarea,index)=>(
           <TareaTarjeta 
           key={index} 
-          _id= {tarea._id}
-          titulo={tarea.titulo} 
-          desc={tarea.desc}
-           date={tarea.date as string} 
-           isCompleted={tarea.isCompleted}          
+          tarea ={tarea}  
+           etiquetas={ etiquetas}       
           />
         ))
         }

@@ -18,38 +18,39 @@ import { borrarTarea, completarTarea } from "@/lib/actions.tarea";
 import { refresh } from "next/cache";
 
 interface Props {
-  _id?: string | undefined;
-  titulo: string;
-  desc: string;
-  date: string | Date;
-  isCompleted: boolean;
+
+  tarea: TareaInterface
+  etiquetas: EtiquetaInterface[]
+
+ 
 
 }
 
-export const TareaTarjeta = ({ _id, titulo, desc, date, isCompleted }: Props) => {
+export const TareaTarjeta = ({ tarea,etiquetas }: Props) => {
   const router = useRouter();
 
-  const [completed, setCompleted] = useState(isCompleted)
+  const [completed, setCompleted] = useState(tarea.isCompleted)
+  const [etiqueta, setEtiqueta] = useState<string>()
 
   const handleClick = () => {
     setCompleted((prevState => !prevState))
   }
 
   function handleEdit() {
-    router.push(`/tareas/editar/${_id}`)
+    router.push(`/tareas/editar/${tarea._id}`)
   }
 
   async function handleDelete() {
-    if (_id) {
-      const tareaBorrada = await borrarTarea(_id as string)
+    if (tarea._id) {
+      const tareaBorrada = await borrarTarea(tarea._id as string)
     }
   }
 
 
   async function handleComplete() {
 
-    if (_id) {
-      const tareaActualizada = await completarTarea(_id as string)
+    if (tarea._id) {
+      const tareaActualizada = await completarTarea(tarea._id as string)
 
       setCompleted((prevState) => !prevState)
     }
@@ -57,23 +58,42 @@ export const TareaTarjeta = ({ _id, titulo, desc, date, isCompleted }: Props) =>
 
   }
 
+
+  useEffect(() => {
+    const etiquetaSeleccionada = etiquetas.find((etiqueta)=> etiqueta._id === tarea.etiquetaId) 
+
+    if(etiquetaSeleccionada){
+         setEtiqueta(etiquetaSeleccionada.nombre)
+    }
+
+  }, [etiquetas,tarea])
+  
+
+
   return (
     <Card className="w-[320px]">
       <CardHeader>
-        <CardTitle className="text-xl text-gray-800">{titulo}
+        <CardTitle className="text-xl text-gray-800">{tarea.titulo}
 
           <Separator className="mt-2" />
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-gray-600">{desc}</p>
+        <p className="text-sm text-gray-600">{tarea.desc}</p>
       </CardContent>
       <CardFooter className="flex flex-col pb-0">
         <Separator className="m-2" />
 
+        <div className="flex w-full">
+          <p className="text-sm bg-gray-200 text-gray-800 rounded-full px-4">
+            {etiqueta}
+          </p>
+          
+        </div>
+
         <div className="flex justify-between items-center w-full">
 
-          <p className="text-sm text-gray-600">{date.toString().substring(0, 10)}</p>
+          <p className="text-sm text-gray-600">{tarea.date.toString().substring(0, 10)}</p>
 
 
           <div className="flex justify-end gap-8 w-full my-2 py-2">
