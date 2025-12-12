@@ -38,6 +38,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
+
 import { getEtiquetas } from "@/lib"
 
 
@@ -66,7 +68,7 @@ const FormularioTareaNueva = ({ type, data }: Props) => {
     const [date, setDate] = useState<Date>()
     const [open, setOpen] = useState(false)
     const [etiquetaLista, setEtiquetaLista] = useState<EtiquetaInterface[]>()
-
+    const [procesando, setProcesando] = useState(false)
 
 
     const tareaDefaultValues = {
@@ -128,6 +130,8 @@ const FormularioTareaNueva = ({ type, data }: Props) => {
 
         } catch (error) {
             console.log(error)
+        } finally{
+            setProcesando((prevState)=> !prevState)
         }
     }
 
@@ -147,6 +151,11 @@ const FormularioTareaNueva = ({ type, data }: Props) => {
 
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="bg-white border rounded-md p-4 space-y-8">
+               
+               <div className="flex flex-col md:flex-row gap-12">
+
+                <div className="flex flex-col min-w-72  gap-8">
+
                 <FormField
                     control={form.control}
                     name="titulo"
@@ -168,54 +177,19 @@ const FormularioTareaNueva = ({ type, data }: Props) => {
                         <FormItem>
                             <FormLabel>descripcion</FormLabel>
                             <FormControl>
-                                <Input placeholder="" {...field} />
+                                <Textarea 
+                                className="h-44"
+                                placeholder="escribe tu descripcion" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
 
-                {/* <FormField
-                    control={form.control}
-                    name="date"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Fecha a completar</FormLabel>
-                            <FormControl>
-                                <Popover open={open} onOpenChange={setOpen}>
-                                    <PopoverTrigger asChild>
-                                        <Button
-                                            variant="outline"
-                                             data-empty={!date}
-                                            className="data-[empty=true]:text-muted-foreground w-[280px] justify-start text-left font-normal"
-                                            
-                                        
-                                        >
-                                            <CalendarIcon />
-                                            {date ? format(date, "PPP") : <span>Pick a date</span>}
-                                        </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-auto p-0">
-                                        <Calendar 
-                                        mode="single" 
-                                        //selected={date} onSelect={setDate}
-                                         selected={field.value } 
-                                         onSelect={field.onChange}
-                                        // onSelect={(newValue)=>{
-                                        //     setDate(newValue)
-                                        //     setOpen(false);
-                                        //     field.onChange
-                                        // }}
-                                         />
-                                    </PopoverContent>
-                                </Popover>
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                /> */}
+                </div>
 
-
+             
+                <div className="flex flex-col min-w-72  gap-8">
 
                 <FormField
                     control={form.control}
@@ -289,7 +263,7 @@ const FormularioTareaNueva = ({ type, data }: Props) => {
                         </FormItem>
                     )}
                 />
-                
+           
 
                 <FormField
                     control={form.control}
@@ -307,11 +281,17 @@ const FormularioTareaNueva = ({ type, data }: Props) => {
                         </FormItem>
                     )}
                 />
+                 </div>
+                </div>
 
 
 
-
-                <Button type="submit">Submit</Button>
+                <Button
+                className="w-full bg-blue-700" 
+                disabled ={procesando}
+                type="submit">
+                    {type === 'editar' ? 'Guardar' : 'Crear'}
+                </Button>
             </form>
         </Form>
 
