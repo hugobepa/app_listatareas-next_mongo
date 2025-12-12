@@ -69,3 +69,19 @@ export const borrarEtiqueta = async(etiquetaId: string)=>{
         console.log({error})
     }
 }
+
+export const getEtiquetas = async ()=>{
+
+    await connectToBBDD();
+         
+    try {
+        
+        const etiquetas = await Etiqueta.find()
+
+          return JSON.parse(JSON.stringify(etiquetas))
+    } catch (error) {
+        console.log({error})
+        
+    }
+
+}
