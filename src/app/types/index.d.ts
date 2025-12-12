@@ -20,3 +20,15 @@ declare type TareaInterface =
         isCompleted:boolean;
 
     }
+
+declare type EtiquetaInterface =
+    {
+        _id?:string;
+        nombre:string;
+    }
+
+declare type EtiquetaParams =
+    {
+        nombre:string;
+    }    
+

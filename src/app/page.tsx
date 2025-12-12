@@ -1,3 +1,4 @@
+import NavBar from "@/components/NavBar";
 import { TareaTarjeta } from "@/components/TareaTarjeta";
 import { Button } from "@/components/ui/button";
 import { tareas } from "@/contants";
@@ -12,6 +13,7 @@ const tareas =await getTareas() as TareaInterface[]
 
   return (
     <main className="flex min-h-screen flex-col items-center  p-24 bg-[url('/assets/images/grid.png')]">
+    
       <div className="flex flex-col gap-4 items-center max-w-screen-sm mb-16">
         <h1 className="text-4xl font-semibold text-gray-900 drop-shadow-xl">OrganizaYa</h1>
         <p className="text-gray-600 text-center">Gestionar tus tareas de forma eficiente</p>
