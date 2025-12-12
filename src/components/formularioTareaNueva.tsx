@@ -28,10 +28,17 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { CreateTarea, editarTarea } from "@/lib/actions.tarea"
 import { useRouter } from "next/navigation"
-
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import { getEtiquetas } from "@/lib"
 
 
 
@@ -43,6 +50,7 @@ const formSchema = z.object({
     desc: z.string(),
     date: z.date(),
     isCompleted: z.boolean(),
+    etiquetaId: z.string(),
 })
 
 interface Props {
@@ -57,6 +65,7 @@ const FormularioTareaNueva = ({ type, data }: Props) => {
 
     const [date, setDate] = useState<Date>()
     const [open, setOpen] = useState(false)
+    const [etiquetaLista, setEtiquetaLista] = useState<EtiquetaInterface[]>()
 
 
 
@@ -65,6 +74,7 @@ const FormularioTareaNueva = ({ type, data }: Props) => {
         desc: "",
         date: new Date(),
         isCompleted: false,
+        etiquetaId: '',
 
     }
 
@@ -74,6 +84,7 @@ const FormularioTareaNueva = ({ type, data }: Props) => {
         desc: data?.desc,
         date: data?.date ? new Date(data?.date) : new Date(),
         isCompleted: data?.isCompleted,
+        etiquetaId: data?.etiquetaId,
 
     }
 
@@ -104,7 +115,7 @@ const FormularioTareaNueva = ({ type, data }: Props) => {
             }
 
 
-             if (type === 'editar') {
+            if (type === 'editar') {
                 const tareaActualizada = await editarTarea(values);
 
                 if (tareaActualizada) {
@@ -120,7 +131,16 @@ const FormularioTareaNueva = ({ type, data }: Props) => {
         }
     }
 
+    useEffect(() => {
+        const fetchEtiquetas = async()=>{
+            const etiquetas =await getEtiquetas() as EtiquetaInterface[]
+            setEtiquetaLista(etiquetas)
+        }
+        
 
+        fetchEtiquetas();
+    }, [])
+    
 
     return (
 
@@ -241,6 +261,35 @@ const FormularioTareaNueva = ({ type, data }: Props) => {
 
 
 
+                <FormField
+                    control={form.control}
+                    name="etiquetaId"
+                    render={({ field }) => (
+                        <FormItem className='flex flex-col gap-2'>
+                            <FormLabel>Etiqueta</FormLabel>
+                            <FormControl>
+
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <SelectTrigger className="w-[180px]">
+                                        <SelectValue placeholder="Selecionar etiqueta" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {
+                                            etiquetaLista?.map(etiqueta=>(
+                                                 <SelectItem key={etiqueta._id} value={`${etiqueta._id}`}>
+                                                    <span className="capitalize">{etiqueta.nombre}</span>
+                                                </SelectItem>
+                                            ))
+                                        }
+                                    </SelectContent>
+                                </Select>
+
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                
 
                 <FormField
                     control={form.control}

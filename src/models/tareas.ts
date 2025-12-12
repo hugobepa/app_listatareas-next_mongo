@@ -21,6 +21,10 @@ const TareaSchema =new Schema(
         isCompleted:{
             type:Boolean,
         },
+          etiquetaId:{
+            type: Schema.Types.ObjectId,
+            ref: 'Etiqueta',
+        },
 
     })
 

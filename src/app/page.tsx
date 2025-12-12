@@ -11,6 +11,7 @@ export default async function Home() {
 const tareas =await getTareas() as TareaInterface[]
 
 
+
   return (
     <main className="flex min-h-screen flex-col items-center  p-24 bg-[url('/assets/images/grid.png')]">
     
@@ -22,7 +23,8 @@ const tareas =await getTareas() as TareaInterface[]
       <div className="flex justify-end w-full mb-6">
         <Link href={"/tareas/crear"}>
          <Button
-         variant="default"     
+         variant="default" 
+         className="bg-blue-700"    
         >
           Crear tarea
         </Button>

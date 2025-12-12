@@ -8,6 +8,7 @@ declare type tareaNueva =
         desc:string;
         date:Date;
         isCompleted:boolean;
+        etiquetaId: string;
 
     }
 
@@ -18,6 +19,7 @@ declare type TareaInterface =
         desc:string;
         date:string | Date;
         isCompleted:boolean;
+        etiquetaId: string;
 
     }
 
